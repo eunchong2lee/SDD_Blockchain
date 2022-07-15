@@ -1,0 +1,20 @@
+FROM ubuntu
+
+RUN apt-get update
+RUN apt-get install curl -y
+
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
+RUN apt-get install software-properties-common -y
+
+RUN add-apt-repository -y ppa:ethereum/ethereum
+RUN apt-get update
+RUN apt-get install ethereum -y
+RUN apt-get upgrade geth -y
+
+WORKDIR /ethereum-network
+COPY . .
+
+RUN geth --datadir ./node1/ init ./node1/genesis.json
+RUN geth --datadir ./node2/ init ./node2/genesis.json
+RUN geth --datadir ./node2/ init ./node3/genesis.json

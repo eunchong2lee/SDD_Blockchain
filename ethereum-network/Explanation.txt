@@ -1,0 +1,8 @@
+ubuntu docker private server
+
+node1 node2 node3 genesis block 생성
+
+docker exec -it image_name bash
+접속해서 nohup {실행 명령어} &
+그 후 node 끼리 연결
+
