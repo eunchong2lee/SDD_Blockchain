@@ -7,12 +7,13 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 // openzeppelin count 올라가는거
 // library 임폴트한다.
 
-contract MintNftToken is  ERC721Enumerable {
+contract MintNFT is  ERC721Enumerable {
     using Counters for Counters.Counter;
     
     Counters.Counter private _tokenIds;
 
-    constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
+    // constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
+    constructor() ERC721("SDD", "SDD_symbol") {}
     // symbol = 화폐의 통화기호 ethereum
     // name = 이름
 
