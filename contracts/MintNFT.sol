@@ -17,6 +17,8 @@ contract MintNFT is  ERC721Enumerable {
     // symbol = 화폐의 통화기호 ethereum
     // name = 이름
 
+    event mymint (address sender, uint tokenId);
+
     mapping(uint =>string ) public tokenURIs ;
 
     function tokenURI(uint _tokenId) override public view returns (string memory) {
@@ -28,7 +30,8 @@ contract MintNFT is  ERC721Enumerable {
 
         uint256 tokenId = _tokenIds.current();
         tokenURIs[tokenId] = _tokenURI;
- 
+
+        emit mymint(msg.sender, tokenId);
         _mint(msg.sender, tokenId);
         // msg.sender 주인의 주소
         return tokenId;
