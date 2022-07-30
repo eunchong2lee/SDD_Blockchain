@@ -17,8 +17,6 @@ contract MintNFT is  ERC721Enumerable {
     // symbol = 화폐의 통화기호 ethereum
     // name = 이름
 
-    event mymint (address sender, uint tokenId);
-
     mapping(uint =>string ) public tokenURIs ;
 
     function tokenURI(uint _tokenId) override public view returns (string memory) {
@@ -27,18 +25,15 @@ contract MintNFT is  ERC721Enumerable {
 
     function mintNFT( string memory _tokenURI) public  returns (uint256) {
         _tokenIds.increment();
+        // tokenIds의 값을 1증가한다.
 
         uint256 tokenId = _tokenIds.current();
+        // 1증가한 tokenIds의 값을 적용한다.
         tokenURIs[tokenId] = _tokenURI;
 
-        emit mymint(msg.sender, tokenId);
         _mint(msg.sender, tokenId);
         // msg.sender 주인의 주소
         return tokenId;
-    }
-
-    function editNFT( string memory _tokenURI) public returns (uint256) {
-        
     }
 
     struct NftTokenData {
@@ -47,6 +42,11 @@ contract MintNFT is  ERC721Enumerable {
         uint price ;        
     }
     // 판매를 위한 구조체 만듬
+
+    function setApprovalForAll(bool approved) public virtual {
+        _setApprovalForAll(msg.sender, address(this), approved);
+    }
+    // 관리자에게 권한을 줌
 
 
 // My NFT
@@ -74,6 +74,7 @@ contract MintNFT is  ERC721Enumerable {
 
     function setSaleNftToken(uint256 _tokenId, uint256 _price) public {
         address nftTokenOwner = ownerOf(_tokenId);
+        setApprovalForAll(true);
 
         require(nftTokenOwner == msg.sender, "Caller is not nft token owner.");
         require(_price > 0, "Price is zero or lower.");
@@ -114,6 +115,7 @@ contract MintNFT is  ERC721Enumerable {
     function buyNftToken(uint256 _tokenId) public payable {
         uint256 price = nftTokenPrices[_tokenId];
         address nftTokenOwner = ownerOf(_tokenId);
+        setApprovalForAll(true);
 
         require(price > 0, "nft token not sale.");
         require(price  <= msg.value, "caller sent lower than price.");
@@ -138,8 +140,6 @@ contract MintNFT is  ERC721Enumerable {
         removeToken(_tokenId);
     }
 
-
-
     function removeToken(uint256 _tokenId) private {
                 
         nftTokenPrices[_tokenId] = 0;
@@ -152,3 +152,4 @@ contract MintNFT is  ERC721Enumerable {
         }
     } 
 }
+
