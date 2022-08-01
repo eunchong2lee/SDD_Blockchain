@@ -36,6 +36,7 @@ contract MintNFT is  ERC721Enumerable {
         return tokenId;
     }
 
+
     struct NftTokenData {
         uint256 nftTokenId;
         string  nftTokenURI ;
@@ -77,7 +78,6 @@ contract MintNFT is  ERC721Enumerable {
         setApprovalForAll(true);
 
         require(nftTokenOwner == msg.sender, "Caller is not nft token owner.");
-        require(_price > 0, "Price is zero or lower.");
         require(nftTokenPrices[_tokenId] == 0, "This nft token is already on sale.");
         require(isApprovedForAll(nftTokenOwner, address(this)), "nft token owner did not approve token.");
 
@@ -113,12 +113,9 @@ contract MintNFT is  ERC721Enumerable {
 
     //구매함수
     function buyNftToken(uint256 _tokenId) public payable {
-        uint256 price = nftTokenPrices[_tokenId];
         address nftTokenOwner = ownerOf(_tokenId);
         setApprovalForAll(true);
 
-        require(price > 0, "nft token not sale.");
-        require(price  <= msg.value, "caller sent lower than price.");
         require(nftTokenOwner != msg.sender,"caller is nft token owner.");
         require(isApprovedForAll(nftTokenOwner, address(this)), "nft token owner did not approve token.");
 
