@@ -3,14 +3,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 // openzeppelin/contracts 오픈제플린 컨트렉 열거 가능한 ERC721
-import "@openzeppelin/contracts/utils/Counters.sol";
-// openzeppelin count 올라가는거
-// library 임폴트한다.
 
 contract MintNFT is  ERC721Enumerable {
-    using Counters for Counters.Counter;
-    
-    Counters.Counter private _tokenIds;
 
     // constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
     constructor() ERC721("SDD", "SDD_symbol") {}
@@ -19,21 +13,19 @@ contract MintNFT is  ERC721Enumerable {
 
     mapping(uint =>string ) public tokenURIs ;
 
+
     function tokenURI(uint _tokenId) override public view returns (string memory) {
         return  tokenURIs[_tokenId] ;
     }
 
-    function mintNFT( string memory _tokenURI) public  returns (uint256) {
-        _tokenIds.increment();
-        // tokenIds의 값을 1증가한다.
+    function mintNFT( string memory _tokenURI, uint256 _tokenId) public  returns (uint256) {
 
-        uint256 tokenId = _tokenIds.current();
         // 1증가한 tokenIds의 값을 적용한다.
-        tokenURIs[tokenId] = _tokenURI;
+        tokenURIs[_tokenId] = _tokenURI;
 
-        _mint(msg.sender, tokenId);
+        _mint(msg.sender, _tokenId);
         // msg.sender 주인의 주소
-        return tokenId;
+        return _tokenId;
     }
 
 
